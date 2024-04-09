@@ -4,14 +4,14 @@ class Show
 {
 public:
     string dateAndTime;
-    string title;
+    string title; // Title of Show
     int audinarySeatAvailable;
     int balconySeatAvailable;
     int audinarySeatAvailableForVIP;
     int balconySeatAvailableForVIP;
-    int sales;
     int priceAudinarySeat;
     int priceBalconySeat;
+    int sales;
 
     string GetTitle()
     {
@@ -91,11 +91,11 @@ class Transaction
 {
 public:
     string dateOfBooking;
-    static long int id;
-    int id_n;
-    string ShowName;
-    string BySalesPerson;
-    int price;
+    static long long int id; // Base Transaction Id for us(start from here)
+    int id_n;                // Actual Transaction Id(id for Customer)
+    string ShowName;         // Show Name of the Movie/Event
+    string BySalesPerson;    // Sales Person Name
+    int price;               // Price of the ticket
 
     string getDateOfBooking()
     {
@@ -106,14 +106,14 @@ public:
         time_t tm = time(0);
         this->dateOfBooking = ctime(&tm);
     }
-    long int getId()
+    long long int getId()
     {
         return this->id_n;
     }
     void setId()
     {
-        this->id_n = id;
-        id++;
+        this->id_n = id; // Assign available id to current transaction
+        id++;            // After set the id increase the id for next transaction.
     }
     string getShowName()
     {
@@ -144,21 +144,21 @@ public:
         cout << "Id                       : " << getId() << endl;
         cout << "Show Name                : " << getShowName() << endl;
         cout << "Booked by Sales Person   : " << getSalesPerson() << endl;
-        cout << "price Paid               : " << getPrice() << endl;
+        cout << "Price Paid               : " << getPrice() << endl;
         cout << endl;
     }
 };
-long int Transaction::id = 1001;
+long long int Transaction::id = 1001; // Base Transaction Id For all Newly Transaction
 class SalesPerson
 {
 public:
     string name;
-    long long int mobileNumber;
     string email;
+    long long int mobileNumber;
     string address;
-    long int id;
+    long long int id;
     string password;
-    map<int, Transaction> trans;
+    map<int, Transaction> trans; // record Transaction Done by Self
     string getName()
     {
         return this->name;
@@ -191,11 +191,11 @@ public:
     {
         this->address = a;
     }
-    long int getId()
+    long long int getId()
     {
         return this->id;
     }
-    void SetId(long int id)
+    void SetId(long long int id)
     {
         this->id = id;
     }
@@ -224,49 +224,49 @@ public:
 
     int bookTicket(int a, Show &s)
     {
-        if (a == 0)
+        if (a == 1)
         {
-            int st = s.getAudinarySeatAvailable();
+            int st = s.getAudinarySeatAvailable(); // Get Current Audinary seats
             if (st)
             {
-                s.setAudinarySeatAvailable(st - 1);
-                int sl = s.getSales();
-                s.setSales(sl + 1);
-                Transaction t;
-                t.setId();
-                t.setSalesPerson(this->name);
-                t.setDateOfBooking();
-                t.setShowName(s.GetTitle());
-                t.setPrice(s.getPriceAudinarySeat());
-                trans[t.getId()] = t;
-                return t.getId();
+                s.setAudinarySeatAvailable(st - 1);   // Decreace the number of seats by 1
+                int sl = s.getSales();                // get current Sales
+                s.setSales(sl + 1);                   // Set  New sales as 1+ old sales
+                Transaction t;                        // Make a new Transaction
+                t.setId();                            // Set Transaction id
+                t.setSalesPerson(this->name);         // Set the Sales person's name
+                t.setDateOfBooking();                 // set date of booking
+                t.setShowName(s.GetTitle());          // set show name
+                t.setPrice(s.getPriceAudinarySeat()); // set Price of Respactive seat
+                trans[t.getId()] = t;                 // add the Transaction in sales person's Transaction
+                return t.getId();                     // retutn the id for make it Transaction id
             }
             else
             {
-                cout << "Not Available" << endl;
+                cout << "Not Available" << endl; // if there is no Audinary Seats
                 return 0;
             }
         }
         else
         {
-            int st = s.getBalconySeatAvailable();
+            int st = s.getBalconySeatAvailable(); // Get Current Balcony seats
             if (st)
             {
-                s.setBalconySeatAvailable(st - 1);
-                int sl = s.getSales();
-                s.setSales(sl + 1);
-                Transaction t;
-                t.setId();
-                t.setSalesPerson(this->name);
-                t.setDateOfBooking();
-                t.setShowName(s.GetTitle());
-                t.setPrice(s.getPriceBalconySeat());
-                trans[t.getId()] = t;
-                return t.getId();
+                s.setBalconySeatAvailable(st - 1);   // Decreace the number of seats by 1
+                int sl = s.getSales();               // get current Sales
+                s.setSales(sl + 1);                  // Set  New sales as 1+ old sales
+                Transaction t;                       // Make a new Transaction
+                t.setId();                           // Set Transaction id
+                t.setSalesPerson(this->name);        // set the Sales person's Name to be same as
+                t.setDateOfBooking();                // set date of booking
+                t.setShowName(s.GetTitle());         // set show name
+                t.setPrice(s.getPriceBalconySeat()); // set price of Respactive seat
+                trans[t.getId()] = t;                // add the Transaction in sales person's Transaction
+                return t.getId();                    // retutn the id for make it Transaction id
             }
             else
             {
-                cout << "Not Available" << endl;
+                cout << "Not Available" << endl; // if there is no Balcony Seats
                 return 0;
             }
         }
@@ -274,73 +274,73 @@ public:
     }
     void cancellation(int TransId, Show &s, int typeOfSeat)
     {
-        int st;
-        if (typeOfSeat == 1)
+        int st;              // Variable for store Current Seats
+        if (typeOfSeat == 1) // for Audinary Seat
         {
-            st = s.getAudinarySeatAvailable();
-            s.setAudinarySeatAvailable(st + 1);
-            int sales = s.getSales();
-            s.setSales(sales - 1);
-            trans.erase(TransId);
+            st = s.getAudinarySeatAvailable();  // get Current Audinary Seats
+            s.setAudinarySeatAvailable(st + 1); // increase the Current Audinary Seats by one
+            int sales = s.getSales();           // Get Current Sales
+            s.setSales(sales - 1);              // dercrease the Sales by one
+            trans.erase(TransId);               // erase this Transaction id
         }
-        else
+        else // for Balcony Seat
         {
-            st = s.getBalconySeatAvailable();
-            s.setBalconySeatAvailable(st + 1);
-            int sales = s.getSales();
-            s.setSales(sales - 1);
-            trans.erase(TransId);
+            st = s.getBalconySeatAvailable();  // get Current Balcony Seats
+            s.setBalconySeatAvailable(st + 1); // increase the Current Balcony Seats by one
+            int sales = s.getSales();          // Get Current Sales
+            s.setSales(sales - 1);             // dercrease the Sales by one
+            trans.erase(TransId);              // erase this Transaction id
         }
     }
-    void TransactionDone()
+    void TransactionDone() // Transaction Done By Self
     {
-        for (auto d : trans)
+        for (auto d : trans) // Intrate For All Transaction
         {
-            d.second.PrintTicket();
+            d.second.PrintTicket(); // Call For Print Tickets on Each Transaction
         }
     }
     void Ticket(int Trans_id)
     {
-        trans[Trans_id].PrintTicket();
+        trans[Trans_id].PrintTicket(); // Call For Print Ticket on Perticuler(Trans_id) Transaction
     }
 };
 class ShowManager
 {
 public:
-    static long int id;
+    static long long int id;
 
-    void getSalesPersonsList(map<int, SalesPerson> &mp)
+    void getSalesPersonsList(map<int, SalesPerson> &mp) // Paas the list of Sales Person's by reference
     {
-        for (auto data : mp)
+        for (auto data : mp) // Itrating for each Sales Person's
         {
-            cout << "Name           : " << data.second.name << endl;
-            cout << "Email          : " << data.second.email << endl;
-            cout << "MobileNumber   : " << data.second.mobileNumber << endl;
-            cout << "Address        : " << data.second.address << endl;
-            cout << "Id             : " << data.second.id << endl;
+            cout << "Name           : " << data.second.name << endl;         // Print Name of Sales man
+            cout << "Email          : " << data.second.email << endl;        // Print mail of Sales man
+            cout << "MobileNumber   : " << data.second.mobileNumber << endl; // Print the Mobile NUmber of Sales man
+            cout << "Address        : " << data.second.address << endl;      // Print the Address of Sales man
+            cout << "Id             : " << data.second.id << endl;           // Print the Id of Sales man
             cout << endl;
         }
     }
-    void getShowList(vector<Show> &v)
+    void getShowList(vector<Show> &v) // Paas the list of Shows by reference
     {
-        for (auto data : v)
+        for (auto data : v) // Itrating for each Show
         {
             cout << endl;
-            cout << "Title                 : " << data.GetTitle() << endl;
-            cout << "Audinary Seats        : " << data.getAudinarySeatAvailable() << endl;
-            cout << "Balcony seats         : " << data.getBalconySeatAvailable() << endl;
-            cout << "Audinary VIP seats    : " << data.getAudinarySeatForVIP() << endl;
-            cout << "Balcony VIP seats     : " << data.getBalconySeatForVIP() << endl;
-            cout << "Audinary Seat Price   : " << data.getPriceAudinarySeat() << endl;
-            cout << "Balcony Seat Price    : " << data.getPriceBalconySeat() << endl;
+            cout << "Title                 : " << data.GetTitle() << endl;                 // Print the title of Show
+            cout << "Audinary Seats        : " << data.getAudinarySeatAvailable() << endl; // Print Audinary seats available in that show
+            cout << "Balcony seats         : " << data.getBalconySeatAvailable() << endl;  // Print Available Balcony Seats
+            cout << "Audinary VIP seats    : " << data.getAudinarySeatForVIP() << endl;    // Print Audinary VIP Seats
+            cout << "Balcony VIP seats     : " << data.getBalconySeatForVIP() << endl;     // Print Number of VIP Balcony Seats
+            cout << "Audinary Seat Price   : " << data.getPriceAudinarySeat() << endl;     // Print Audinary Seat Price
+            cout << "Balcony Seat Price    : " << data.getPriceBalconySeat() << endl;      // Print Balcony Seat price
         }
         cout << endl;
     }
-    void setSalesPerson(map<int, SalesPerson> &mp)
+    void setSalesPerson(map<int, SalesPerson> &mp) // Paas the list of Sales Person's by reference for Adding New Sales Person
     {
-        string name, email, add;
-        long long int mobile;
-        SalesPerson sp;
+        string name, email, add; // Types of Data to be Entered
+        long long int mobile;    // Type of Data to be Entered
+        SalesPerson sp;          // making a new object of class SalesPerson for new Sales Person
         cout << "Enter name of Sales Person            : ";
         cin >> name;
         cout << endl;
@@ -354,19 +354,19 @@ public:
         cin >> add;
         cout << endl;
         cout << " SUCCESSFULLY ADDED " << endl;
-        sp.setName(name);
-        sp.setAddress(add);
-        sp.setEmail(email);
-        sp.SetId(id);
-        sp.setmobileNumber(mobile);
-        mp[id] = sp;
-        id++;
+        sp.setName(name);           // Set name of Sales Person
+        sp.setAddress(add);         // Set address of Sales Person
+        sp.setEmail(email);         // Set mail of Sales Person
+        sp.SetId(id);               // Set ID of Sales Person
+        sp.setmobileNumber(mobile); // Set mobile number of Sales Person
+        mp[id] = sp;                // Adding Sales Person in the given List
+        id++;                       // increase the base id of Sales Person's
     }
-    void setShowList(vector<Show> &v)
+    void setShowList(vector<Show> &v) // Paas the list of Shows by reference for Adding New Show
     {
-        Show new_show;
-        string title;
-        int Aud, Bal, AudVIP, BalVIP, PriceAud, PriceBal;
+        Show new_show;                                    // making a new object of class Show for new Show
+        string title;                                     // Title of Show
+        int Aud, Bal, AudVIP, BalVIP, PriceAud, PriceBal; // Types of Seats
         cout << "Enter Title of The Show                      : ";
         cin >> title;
         cout << endl;
@@ -389,35 +389,35 @@ public:
         cin >> PriceBal;
         cout << endl;
         cout << " SUCCESSFULLY ADDED " << endl;
-        new_show.SetTitle(title);
-        new_show.setAudinarySeatAvailable(Aud);
-        new_show.setBalconySeatAvailable(Bal);
-        new_show.setAudinarySeatForVip(AudVIP);
-        new_show.setBalconySeatForVIP(BalVIP);
-        new_show.setSales(0);
-        new_show.setPriceAudinarySeat(PriceAud);
-        new_show.setPriceBalconySeat(PriceBal);
-        new_show.setDateandTime();
-        v.push_back(new_show);
+        new_show.SetTitle(title);                // Set the title of new show
+        new_show.setAudinarySeatAvailable(Aud);  // set the number of Audinary Seats
+        new_show.setBalconySeatAvailable(Bal);   // Set the number of Balcony Seats
+        new_show.setAudinarySeatForVip(AudVIP);  // Set the number of VIP Audinary Seats
+        new_show.setBalconySeatForVIP(BalVIP);   // Set the number of VIP Balcony Se
+        new_show.setSales(0);                    // Set Sales to zero as no one has booked yet
+        new_show.setPriceAudinarySeat(PriceAud); // Set the price of Audinary Seats
+        new_show.setPriceBalconySeat(PriceBal);  // Set the price of Balcony Seats
+        new_show.setDateandTime();               // Set Date and Time
+        v.push_back(new_show);                   // Adding the new show in list of shows
     }
-    void FireSalesPerson(long int id, map<int, SalesPerson> &MP)
+    void FireSalesPerson(long long int id, map<int, SalesPerson> &MP) // Paas the list of Sales Person's by reference for Fire Sales Person
     {
-        MP.erase(id);
+        MP.erase(id); // Erase the id of sales person from list
     }
-    void AllTransactions(map<int, SalesPerson> &mp)
+    void AllTransactions(map<int, SalesPerson> &mp) // Paas the list of Sales Person's by reference for Check All Transaction
     {
-        for (auto data : mp)
+        for (auto data : mp) // Itrate for each Sales Person's Account
         {
-            data.second.TransactionDone();
+            data.second.TransactionDone(); // Call to Sales Person for print All Transaction
         }
     }
 };
-long int ShowManager::id = 7893;
+long long int ShowManager::id = 7893; // Base Id for all Newly added Sales Person's
 class Data
 {
 public:
-    int id;   // id of users/customer
-    int T_Id; // Transaction Id
+    int id;   // id of Sales Person
+    int T_Id; // Transaction Id of Customer
     int ind;  // Serial Number of Show From The Show List
     int st;   // seat type
 };
@@ -447,19 +447,19 @@ int main()
 
         cout << "Enter your role (1/ 2/ 3/ 4): ";
         cin >> a;
-        if (a == 4)
+        if (a == 4) // Exit from Portal
         {
             cout << endl
                  << "Quiting...." << endl;
             break;
         }
-        else if (a > 4)
+        else if (a > 4) // invalid Choice
         {
             cout << endl
                  << "Enter your Choice again" << endl;
             continue;
         }
-        else
+        else // Loading To enter the Portal
         {
             cout << endl
                  << "loading ..." << endl;
@@ -481,48 +481,48 @@ int main()
                 cout << 7 << ". Log Out" << endl
                      << endl;
                 cout << "Enter your choice : ";
-                cin >> b;
+                cin >> b; // Taking your choice
                 cout << endl;
 
-                if (b == 1)
+                if (b == 1) // For gatting Sales Person's list
                 {
-                    s.getSalesPersonsList(SPList);
+                    s.getSalesPersonsList(SPList); // Call For gatting Sales Person's list
                 }
-                else if (b == 2)
+                else if (b == 2) // For adding new Sales Person's
                 {
-                    s.setSalesPerson(SPList);
+                    s.setSalesPerson(SPList); // Call For adding new Sales Person's
                 }
-                else if (b == 3)
+                else if (b == 3) // For fire the sales person from the system
                 {
                     cout << endl;
                     cout << "Enter Sales Persones id : ";
                     int Enter_Sales_Persones_id;
                     cin >> Enter_Sales_Persones_id;
                     cout << endl;
-                    s.FireSalesPerson(Enter_Sales_Persones_id, SPList); // fire the sales person
+                    s.FireSalesPerson(Enter_Sales_Persones_id, SPList); // Call For fire the sales person
                     cout << "Sales Person is Fired............." << endl;
                     cout << endl;
                 }
-                else if (b == 4)
+                else if (b == 4) // For gatting Show List
                 {
-                    s.getShowList(ShowList);
+                    s.getShowList(ShowList); // Call For gatting Show List
                 }
-                else if (b == 5)
+                else if (b == 5) // For Add new Show
                 {
-                    s.setShowList(ShowList);
+                    s.setShowList(ShowList); // Call For Add new Show
                 }
-                else if (b == 6)
+                else if (b == 6) // For Check All Transactions Till Now
                 {
-                    s.AllTransactions(SPList);
+                    s.AllTransactions(SPList); // Call For Check All Transactions Till Now
                 }
-                else if (b == 7)
+                else if (b == 7) // Logout Option
                 {
-                    break;
+                    break; // Exit From the Manager Portal
                 }
-                else
+                else // Invalid Option
                 {
                     cout << "Invalid Option! Please try again." << endl;
-                    break; // if you  enter any other number then it will go to the main Page
+                    break; // if you enter any other number then it will go to the main Page
                 }
             }
         }
@@ -535,9 +535,9 @@ int main()
             cout << "Enter your id for login : ";
             cin >> id;
             cout << endl;
-            if (SPList.find(id) == SPList.end())
+            if (SPList.find(id) == SPList.end()) // Checking Id from the Sales Person's list
             {
-                cout << "Invalid id" << endl;
+                cout << "Invalid id" << endl; // Sales Person does not Exist
             }
             else
             {
@@ -551,23 +551,23 @@ int main()
                     cout << 4 << ". Log Out" << endl
                          << endl;
                     cout << "Enter Your Choice : ";
-                    cin >> c;
+                    cin >> c; // Taking your choice
                     cout << endl;
-                    if (c == 1)
+                    if (c == 1) // For Set new User Name
                     {
-                        SPList[id].setUserName();
+                        SPList[id].setUserName(); // Call For Set New UserName
                     }
-                    else if (c == 2)
+                    else if (c == 2) // For Set new Password
                     {
-                        SPList[id].setPassword();
+                        SPList[id].setPassword(); // Call For Set New Password
                     }
-                    else if (c == 3)
+                    else if (c == 3) // For Transactions done By Self
                     {
-                        SPList[id].TransactionDone();
+                        SPList[id].TransactionDone(); // Call For Check All Trasnsication Done By Self
                     }
-                    else
+                    else // Invalid or Logout Option
                     {
-                        break;
+                        break; // Invalid Option or Logout
                     }
                 }
             }
@@ -579,17 +579,17 @@ int main()
                  << endl;
             cout << "Enter Username : ";
             string userName;
-            cin >> userName;
+            cin >> userName; // Taking UserName From User
             cout << endl;
-            if (users.find(userName) == users.end())
+            if (users.find(userName) == users.end()) // checking User Exist in the DataBase
             {
                 Data dt;
-                dt.T_Id = -1;
-                users[userName] = dt;
+                dt.T_Id = -1;         // If Not Exist Then Set T_Id As -1 Menas No Transication Till Now
+                users[userName] = dt; // Enter The New User in Data base With T_Id=-1
             }
             cout << "Enter Password : ";
             string Password;
-            cin >> Password;
+            cin >> Password; // Taking Password From User
             cout << endl
                  << "logging in ..." << endl;
             cout << endl;
@@ -603,116 +603,114 @@ int main()
                 cout << 5 << ". Log out" << endl
                      << endl;
                 cout << "Enter Your Choice : ";
-                cin >> d;
+                cin >> d; // Taking your choice
                 cout << endl;
-                if (d == 1)
+                if (d == 1) // For check Your Bookings
                 {
-                    int tid = users[userName].T_Id;
-                    if (tid == -1)
+                    int tid = users[userName].T_Id; // Gatting T_id Of User
+                    if (tid == -1)                  // If  User Haven't any transaction till now then
                     {
                         cout << "--------------------------------------------------------" << endl;
-                        cout << "|                You have No booking !!!                |" << endl;
-                        cout << "--------------------------------------------------------" << endl
-                             << endl;
+                        cout << "|                You have No booking !!!               |" << endl;
+                        cout << "--------------------------------------------------------" << endl;
+                        cout << endl;
                     }
                     else
                     {
-                        int id = users[userName].id;
-                        int tid = users[userName].T_Id;
-                        SalesPerson sw = SPList[id];
-                        sw.Ticket(tid);
+                        int id = users[userName].id;    // Gatting Id of Booked Show
+                        int tid = users[userName].T_Id; // Gatting T_Id of booked Show
+                        SalesPerson sw = SPList[id];    // Gatting SalesPerson Id From Our DataBase
+                        sw.Ticket(tid);                 // Call to Sales Person For Printing Tickets Of user
                     }
                 }
-                else if (d == 2)
+                else if (d == 2) // For Checking Show Schedules
                 {
-                    for (int i = 0; i < ShowList.size(); i++)
+                    for (int i = 0; i < ShowList.size(); i++) // Itrate for eaxh Show
                     {
-                        Show so = ShowList[i];
-                        string title = so.GetTitle();
-                        string time = so.getDateandTime();
-                        int Aud = so.getAudinarySeatAvailable();
-                        int Bal = so.getBalconySeatAvailable();
-                        int pa = so.getPriceAudinarySeat();
-                        ;
-                        int pb = so.getPriceBalconySeat();
+                        Show so = ShowList[i];                   // Gatting Show
+                        string title = so.GetTitle();            // Gatting title of Show
+                        string time = so.getDateandTime();       // Gatting Date And Time of Show
+                        int Aud = so.getAudinarySeatAvailable(); // Gatting Available Audinary Seats
+                        int Bal = so.getBalconySeatAvailable();  // Gatting  Available Balcony Seats
+                        int pa = so.getPriceAudinarySeat();      // Gatting Price Of Each Audinary Seat
+                        int pb = so.getPriceBalconySeat();       // Gatting Price Of Each Balcony Seat
                         cout << endl;
-                        cout << "Show Number              : " << i + 1 << endl;
-                        cout << "Title                    : " << title << endl;
-                        cout << "Audinary Seats Available : " << Aud << endl;
-                        cout << "Balcony Seats Available  : " << Bal << endl;
-                        cout << "Price Audinary Seat      : " << pa << endl;
-                        cout << "Price Balcony Seat       : " << pb << endl
+                        cout << "Show Number              : " << i + 1 << endl; // Print Show Number
+                        cout << "Title                    : " << title << endl; // Print Title of Show
+                        cout << "Audinary Seats Available : " << Aud << endl;   // Print Audinary Seats Available
+                        cout << "Balcony Seats Available  : " << Bal << endl;   // Print Available Balcony Seats
+                        cout << "Price Audinary Seat      : " << pa << endl;    // Print Price Of Each Audinary Seat
+                        cout << "Price Balcony Seat       : " << pb << endl     // Print Price Of Each Balcony Seat
                              << endl;
                     }
                 }
-                else if (d == 3)
+                else if (d == 3) // For Book Show
                 {
-                    if (ShowList.size() == 0)
+                    if (ShowList.size() == 0) // Checking Show Availability
                     {
-                        cout << "No Shows available" << endl;
+                        cout << "No Shows available" << endl; // No Show Available
                     }
                     else
                     {
                         cout << "Choose Show from the list : ";
-                        int ind; // index of show
-                        cin >> ind;
-                        int sz = SPList.size();
-                        int id = rand() % (sz) + 7893;
-                        int st; //
-                        cout << 1 << ". Audinary" << endl;
-                        cout << 2 << ". Balcony" << endl;
-                        cout << "Choose seat type : ";
-                        cin >> st;
+                        int ind;                           // Chose the index of Show From the List
+                        cin >> ind;                        // Taking index as input
+                        int sz = SPList.size();            // gatting Size of SaleSPerson List
+                        int id = rand() % (sz) + 7893;     // Gatting raandom Sales Person's Id
+                        int st;                            // Seat Type
+                        cout << 1 << ". Audinary" << endl; // type of seat
+                        cout << 2 << ". Balcony" << endl;  // type of seat
+                        cout << "Choose seat type : ";     // Choosing The Type of seat
+                        cin >> st;                         // Taking input for type of seat
                         cout << endl;
-                        int T_Id = SPList[id].bookTicket(st, ShowList[ind - 1]);
-                        if (T_Id)
+                        int T_Id = SPList[id].bookTicket(st, ShowList[ind - 1]); // booking ticket by calling function of SalesPerson and Gattign T_id
+                        if (T_Id)                                                // If we get a valid T_id
                         {
-                            users[userName].T_Id = T_Id;
-                            users[userName].id = id;
-                            users[userName].st = st;
-                            users[userName].ind = ind - 1;
+                            users[userName].T_Id = T_Id;   // Set the T_Id in DataBase for User
+                            users[userName].id = id;       // Set the id of SalesPersonin DataBase for keep Tracking individual Sales
+                            users[userName].st = st;       // Set the seat type of user
+                            users[userName].ind = ind - 1; // Set the index of show for user
                             cout << "Booking........." << endl;
-                            // usleep(500000);
                             cout << "--------------------------------------------------------" << endl;
                             cout << "|         Congrats!!!! Booking Confirmed.               |" << endl;
                             cout << "--------------------------------------------------------" << endl
                                  << endl;
                             cout << "Your Ticket" << endl;
-                            SPList[id].Ticket(T_Id);
+                            SPList[id].Ticket(T_Id); // Print the Booked Ticket
                         }
-                        else
+                        else // if seat is not avilable then it will ask to choose another one
                         {
                             cout << "Sorry !! the service you are looking for is not available currently." << endl;
                         }
                     }
                 }
-                else if (d == 4)
+                else if (d == 4) // Cancel Ticket
                 {
-                    int tid = users[userName].T_Id;
-                    if (tid == -1)
+                    int tid = users[userName].T_Id; // Gatting T_Id Of User
+                    if (tid == -1)                  // -1 means you have No booking
                     {
                         cout << "--------------------------------------------------------" << endl;
-                        cout << "|                You have No booking !!!                |" << endl;
-                        cout << "--------------------------------------------------------" << endl
-                             << endl;
+                        cout << "|                You have No booking !!!               |" << endl;
+                        cout << "--------------------------------------------------------" << endl;
+                        cout << endl;
                     }
                     else
                     {
-                        Show sw = ShowList[users[userName].ind];
-                        int idu = users[userName].id;
-                        int stp = users[userName].st;
-                        SPList[idu].cancellation(tid, sw, stp);
-                        users[userName].T_Id = -1;
+                        Show sw = ShowList[users[userName].ind]; // get Show Type
+                        int idu = users[userName].id;            // get id of Sales Person
+                        int stp = users[userName].st;            // get seat type of Sales Person
+                        SPList[idu].cancellation(tid, sw, stp);  // cancaling the Ticket
+                        users[userName].T_Id = -1;               // set the Transication Id = -1 means No Booking!
                         cout << " Cancelling ......" << endl;
                         cout << "Cancelled" << endl;
                         cout << "we will initiate the refund process within 24 hrs acoording to our refund policy." << endl;
                     }
                 }
-                else if (d == 5)
+                else if (d == 5) // For Logout
                 {
-                    break; // logout
+                    break; // Logout From Spectator  Portal
                 }
-                else
+                else // incase of Invalid Option
                 {
                     cout << endl
                          << "Invalid Option! Please Enter Again." << endl;
@@ -720,6 +718,4 @@ int main()
             }
         }
     }
-
-    return 0;
 }

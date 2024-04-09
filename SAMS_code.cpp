@@ -252,7 +252,7 @@ public:
             int st = s.getBalconySeatAvailable(); // Get Current Balcony seats
             if (st)
             {
-                s.setBalconySeatAvailable(st - 1);   // Decreace the number of seats by 1
+                s.setBalconySeatAvailable(st - 1);   // Decrease the number of seats by 1
                 int sl = s.getSales();               // get current Sales
                 s.setSales(sl + 1);                  // Set  New sales as 1+ old sales
                 Transaction t;                       // Make a new Transaction
@@ -275,7 +275,7 @@ public:
     void cancellation(int TransId, Show &s, int typeOfSeat)
     {
         int st;              // Variable for store Current Seats
-        if (typeOfSeat == 1) // for Audinary Seat
+        if (typeOfSeat == 1) // For Audinary Seat
         {
             st = s.getAudinarySeatAvailable();  // get Current Audinary Seats
             s.setAudinarySeatAvailable(st + 1); // increase the Current Audinary Seats by one
@@ -283,7 +283,7 @@ public:
             s.setSales(sales - 1);              // dercrease the Sales by one
             trans.erase(TransId);               // erase this Transaction id
         }
-        else // for Balcony Seat
+        else // For Balcony Seat
         {
             st = s.getBalconySeatAvailable();  // get Current Balcony Seats
             s.setBalconySeatAvailable(st + 1); // increase the Current Balcony Seats by one
@@ -424,10 +424,10 @@ public:
 int main()
 {
 
-    cout << "*****************************************************************************" << endl;
-    cout << "                   STUDENT AUDITORIUM MANAGEMENT SYSTEM                      " << endl;
-    cout << "*****************************************************************************" << endl
-         << endl;
+    cout << "*******************************************************************************" << endl;
+    cout << "                    STUDENT AUDITORIUM MANAGEMENT SYSTEM                      " << endl;
+    cout << "*******************************************************************************" << endl;
+    cout << endl;
 
     ShowManager s;                // Show Manager
     vector<Show> ShowList;        // Shows List
@@ -436,15 +436,14 @@ int main()
     int a;                        // Choice Taking From User
     while (true)
     {
-        cout << "--------------------------------HOME PAGE--------------------------------------" << endl
-             << endl;
+        cout << "--------------------------------HOME PAGE--------------------------------------" << endl;
+        cout << endl;
         cout << "Input As:" << endl;
         cout << 1 << ". Show Manager" << endl;
         cout << 2 << ". Sales Person" << endl;
         cout << 3 << ". Spectator" << endl;
-        cout << 4 << ". Exit" << endl
-             << endl;
-
+        cout << 4 << ". Exit" << endl;
+        cout << endl;
         cout << "Enter your role (1/ 2/ 3/ 4): ";
         cin >> a;
         if (a == 4) // Exit from Portal
@@ -468,9 +467,9 @@ int main()
         {
             while (true)
             {
-                cout << endl
-                     << "--------------------SHOW MANAGER PORTAL------------------------------" << endl
-                     << endl;
+                cout << endl;
+                cout << "----------------------------SHOW MANAGER PORTAL--------------------------------" << endl;
+                cout << endl;
                 int b;
                 cout << 1 << ". Get Sales Person List" << endl;
                 cout << 2 << ". Add new Sales Person" << endl;
@@ -478,8 +477,8 @@ int main()
                 cout << 4 << ". Get Show List" << endl;
                 cout << 5 << ". Add new Show" << endl;
                 cout << 6 << ". All transactions Till Now" << endl;
-                cout << 7 << ". Log Out" << endl
-                     << endl;
+                cout << 7 << ". Log Out" << endl;
+                cout << endl;
                 cout << "Enter your choice : ";
                 cin >> b; // Taking your choice
                 cout << endl;
@@ -528,9 +527,9 @@ int main()
         }
         else if (a == 2)
         {
-            cout << endl
-                 << "----------------------SALES PERSON PORTAL---------------------------" << endl
-                 << endl;
+            cout << endl;
+            cout << "--------------------------------SALES PERSON PORTAL-----------------------------" << endl;
+            cout << endl;
             int id;
             cout << "Enter your id for login : ";
             cin >> id;
@@ -548,8 +547,8 @@ int main()
                     cout << 1 << ". Set new User Name" << endl;
                     cout << 2 << ". Set new Password" << endl;
                     cout << 3 << ". Transactions done" << endl;
-                    cout << 4 << ". Log Out" << endl
-                         << endl;
+                    cout << 4 << ". Log Out" << endl;
+                    cout << endl;
                     cout << "Enter Your Choice : ";
                     cin >> c; // Taking your choice
                     cout << endl;
@@ -574,9 +573,9 @@ int main()
         }
         else if (a == 3)
         {
-            cout << endl
-                 << "------------------------SPECTATOR PORTAL-------------------------------" << endl
-                 << endl;
+            cout << endl;
+            cout << "--------------------------------SPECTATOR PORTAL-------------------------------" << endl;
+            cout << endl;
             cout << "Enter Username : ";
             string userName;
             cin >> userName; // Taking UserName From User
@@ -600,8 +599,8 @@ int main()
                 cout << 2 << ". check shows" << endl;
                 cout << 3 << ". book show" << endl;
                 cout << 4 << ". cancell ticket" << endl;
-                cout << 5 << ". Log out" << endl
-                     << endl;
+                cout << 5 << ". Log out" << endl;
+                cout << endl;
                 cout << "Enter Your Choice : ";
                 cin >> d; // Taking your choice
                 cout << endl;
@@ -610,9 +609,9 @@ int main()
                     int tid = users[userName].T_Id; // Gatting T_id Of User
                     if (tid == -1)                  // If  User Haven't any transaction till now then
                     {
-                        cout << "--------------------------------------------------------" << endl;
-                        cout << "|                You have No booking !!!               |" << endl;
-                        cout << "--------------------------------------------------------" << endl;
+                        cout << "-------------------------------------------------------------------------------" << endl;
+                        cout << "|                            You have No booking !!!                          |" << endl;
+                        cout << "-------------------------------------------------------------------------------" << endl;
                         cout << endl;
                     }
                     else
@@ -640,8 +639,8 @@ int main()
                         cout << "Audinary Seats Available : " << Aud << endl;   // Print Audinary Seats Available
                         cout << "Balcony Seats Available  : " << Bal << endl;   // Print Available Balcony Seats
                         cout << "Price Audinary Seat      : " << pa << endl;    // Print Price Of Each Audinary Seat
-                        cout << "Price Balcony Seat       : " << pb << endl     // Print Price Of Each Balcony Seat
-                             << endl;
+                        cout << "Price Balcony Seat       : " << pb << endl;    // Print Price Of Each Balcony Seat
+                        cout << endl;
                     }
                 }
                 else if (d == 3) // For Book Show
@@ -671,10 +670,10 @@ int main()
                             users[userName].st = st;       // Set the seat type of user
                             users[userName].ind = ind - 1; // Set the index of show for user
                             cout << "Booking........." << endl;
-                            cout << "--------------------------------------------------------" << endl;
-                            cout << "|         Congrats!!!! Booking Confirmed.               |" << endl;
-                            cout << "--------------------------------------------------------" << endl
-                                 << endl;
+                            cout << "-------------------------------------------------------------------------------" << endl;
+                            cout << "|                       Congrats!!!! Booking Confirmed.                       |" << endl;
+                            cout << "-------------------------------------------------------------------------------" << endl;
+                            cout << endl;
                             cout << "Your Ticket" << endl;
                             SPList[id].Ticket(T_Id); // Print the Booked Ticket
                         }
@@ -689,9 +688,9 @@ int main()
                     int tid = users[userName].T_Id; // Gatting T_Id Of User
                     if (tid == -1)                  // -1 means you have No booking
                     {
-                        cout << "--------------------------------------------------------" << endl;
-                        cout << "|                You have No booking !!!               |" << endl;
-                        cout << "--------------------------------------------------------" << endl;
+                        cout << "-------------------------------------------------------------------------------" << endl;
+                        cout << "|                            You have No booking !!!                          |" << endl;
+                        cout << "-------------------------------------------------------------------------------" << endl;
                         cout << endl;
                     }
                     else
@@ -712,10 +711,11 @@ int main()
                 }
                 else // incase of Invalid Option
                 {
-                    cout << endl
-                         << "Invalid Option! Please Enter Again." << endl;
+                    cout << endl;
+                    cout << "Invalid Option! Please Enter Again." << endl;
                 }
             }
         }
     }
+    return 0;
 }

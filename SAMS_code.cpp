@@ -425,7 +425,7 @@ int main()
 {
 
     cout << "*******************************************************************************" << endl;
-    cout << "                    STUDENT AUDITORIUM MANAGEMENT SYSTEM                      " << endl;
+    cout << "                     STUDENT AUDITORIUM MANAGEMENT SYSTEM                      " << endl;
     cout << "*******************************************************************************" << endl;
     cout << endl;
 

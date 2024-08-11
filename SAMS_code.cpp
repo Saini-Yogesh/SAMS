@@ -272,7 +272,7 @@ public:
         }
         return 0;
     }
-    void cancellation(int TransId, Show &s, int typeOfSeat)
+    Show cancellation(int TransId, Show &s, int typeOfSeat)
     {
         int st;              // Variable for store Current Seats
         if (typeOfSeat == 1) // For Audinary Seat
@@ -291,6 +291,7 @@ public:
             s.setSales(sales - 1);             // dercrease the Sales by one
             trans.erase(TransId);              // erase this Transaction id
         }
+        return s; // returning the updated show detail
     }
     void TransactionDone() // Transaction Done By Self
     {
@@ -695,11 +696,12 @@ int main()
                     }
                     else
                     {
-                        Show sw = ShowList[users[userName].ind]; // get Show Type
-                        int idu = users[userName].id;            // get id of Sales Person
-                        int stp = users[userName].st;            // get seat type of Sales Person
-                        SPList[idu].cancellation(tid, sw, stp);  // cancaling the Ticket
-                        users[userName].T_Id = -1;               // set the Transication Id = -1 means No Booking!
+                        Show sw = ShowList[users[userName].ind];                     // get Show Type
+                        int idu = users[userName].id;                                // get id of Sales Person
+                        int stp = users[userName].st;                                // get seat type of Sales Person
+                        Show ModifitedShow = SPList[idu].cancellation(tid, sw, stp); // cancaling the Ticket
+                        ShowList[users[userName].ind] = ModifitedShow;               // updating the show detail
+                        users[userName].T_Id = -1;                                   // set the Transication Id = -1 means No Booking!
                         cout << " Cancelling ......" << endl;
                         cout << "Cancelled" << endl;
                         cout << "we will initiate the refund process within 24 hrs acoording to our refund policy." << endl;
